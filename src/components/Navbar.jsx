@@ -1,16 +1,42 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const navLinks = [
-  { label: 'About', href: '#about', active: true },
-  { label: 'Projects', href: '#projects', active: false },
-  { label: 'Services', href: '#services', active: false },
-  { label: 'Reviews', href: '#reviews', active: false },
-  { label: 'Contact', href: '#contact', active: false },
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Projects', href: '#projects', id: 'projects' },
+  { label: 'Services', href: '#services', id: 'services' },
+  { label: 'Reviews', href: '#reviews', id: 'reviews' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
 ]
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sectionIds = ['about', 'projects', 'services', 'reviews', 'contact']
+      const scrollPosition = window.scrollY + 250 // threshold for navbar height
+
+      let current = ''
+      for (const id of sectionIds) {
+        const el = document.getElementById(id)
+        if (el) {
+          const top = el.offsetTop
+          const height = el.offsetHeight
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            current = id
+            break
+          }
+        }
+      }
+      setActiveSection(current)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-navy-950/80 backdrop-blur-xl border-b border-white/5">
@@ -58,25 +84,32 @@ export default function Navbar() {
 
         {/* Center-right: Nav Links (desktop) */}
         <div className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className={`relative px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-                link.active
-                  ? 'text-white'
-                  : 'text-white/60 hover:text-white/90'
-              }`}
-            >
-              {link.label}
-              {link.active && (
-                <motion.span
-                  layoutId="nav-underline"
-                  className="absolute bottom-0 left-4 right-4 h-0.5 bg-accent rounded-full"
-                />
-              )}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                className={`relative px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                  isActive
+                    ? 'text-white'
+                    : 'text-white/60 hover:text-white/90'
+                }`}
+              >
+                {link.label}
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    initial={{ opacity: 0, scaleX: 0 }}
+                    animate={{ opacity: 1, scaleX: 1 }}
+                    exit={{ opacity: 0, scaleX: 0 }}
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    className="absolute bottom-0 left-4 right-4 h-0.5 bg-accent rounded-full"
+                  />
+                )}
+              </a>
+            )
+          })}
         </div>
 
         {/* Far right: Hire Me button + mobile menu toggle */}
@@ -120,20 +153,23 @@ export default function Navbar() {
             className="lg:hidden bg-navy-950/95 backdrop-blur-xl border-t border-white/5 overflow-hidden"
           >
             <div className="px-6 py-4 flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
-                    link.active
-                      ? 'text-white bg-white/5'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
+                      isActive
+                        ? 'text-white bg-white/5'
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                )
+              })}
               <a
                 href="tel:+91XXXXXXXXXX"
                 className="flex items-center gap-2 px-4 py-3 text-sm text-white/80"
