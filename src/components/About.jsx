@@ -15,14 +15,14 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative w-full overflow-hidden bg-navy-950 py-24 lg:py-32"
+      className="relative w-full overflow-hidden bg-navy-950 py-16 sm:py-24 lg:py-32"
     >
       {/* ── "ABOUT ME" watermark ── */}
-      <div className="absolute top-8 left-0 right-0 z-0 pointer-events-none select-none overflow-hidden">
+      <div className="absolute top-4 sm:top-8 left-0 right-0 z-0 pointer-events-none select-none overflow-hidden">
         <span
           className="block font-black uppercase tracking-[-0.04em] leading-none text-center lg:text-left lg:ml-[24%]"
           style={{
-            fontSize: 'clamp(4.5rem, 13vw, 11rem)',
+            fontSize: 'clamp(2.8rem, 12vw, 11rem)',
             color: 'rgba(255, 255, 255, 0.05)',
           }}
         >
@@ -31,7 +31,7 @@ export default function About() {
       </div>
 
       {/* ── Content grid ── */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-12">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-14">
 
           {/* ── Left column: Portrait card ── */}
@@ -41,7 +41,7 @@ export default function About() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             custom={0}
-            className="w-full max-w-[320px] lg:max-w-[350px] flex-shrink-0"
+            className="w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[350px] flex-shrink-0"
           >
             <div
               className="relative rounded-2xl overflow-hidden"
@@ -60,8 +60,8 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* ── Right column: Headline + bio (offset down to match reference alignment) ── */}
-          <div className="flex-1 max-w-2xl lg:pt-14">
+          {/* ── Right column: Headline + bio ── */}
+          <div className="flex-1 max-w-2xl lg:pt-14 text-left">
             {/* Headline — same mixed-emphasis pattern as the hero */}
             <motion.h2
               variants={fadeUp}
@@ -69,9 +69,9 @@ export default function About() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               custom={1}
-              className="uppercase mb-6"
+              className="uppercase mb-5 sm:mb-6"
               style={{
-                fontSize: 'clamp(2.2rem, 3.8vw, 3.2rem)',
+                fontSize: 'clamp(1.75rem, 5.2vw, 3.2rem)',
                 lineHeight: 1.08,
                 letterSpacing: '-0.01em',
                 fontWeight: 800,

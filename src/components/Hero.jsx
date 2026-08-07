@@ -36,33 +36,40 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <img
           src={heroPhoto}
-          alt="Souvik Bisoi sitting on a bean-bag chair with a laptop and coffee cup, moody cinematic lighting with diagonal light streaks"
-          className="w-full h-full object-cover object-[65%_center]"
+          alt="Souvik Bisoi sitting on a bean-bag chair with a laptop and coffee cup"
+          className="w-full h-full object-cover object-[78%_center] sm:object-[65%_center]"
         />
-        {/* Dark gradient overlay — strong on the left for text, transparent on the right to show the photo */}
+        {/* Dark gradient overlay — full dark overlay on mobile, right fade on desktop */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 hidden sm:block"
           style={{
-            background: 'linear-gradient(to right, #050C1A 0%, rgba(5,12,26,0.92) 25%, rgba(5,12,26,0.65) 45%, rgba(5,12,26,0.15) 65%, transparent 80%)',
+            background: 'linear-gradient(to right, #050C1A 0%, rgba(5,12,26,0.92) 35%, rgba(5,12,26,0.65) 55%, rgba(5,12,26,0.15) 75%, transparent 90%)',
           }}
         />
-        {/* Top fade */}
+        {/* Mobile vertical overlay */}
+        <div
+          className="absolute inset-0 sm:hidden"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(5,12,26,0.92) 0%, rgba(5,12,26,0.85) 50%, rgba(5,12,26,0.95) 100%)',
+          }}
+        />
+        {/* Top & bottom fades */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(5,12,26,0.5) 0%, transparent 30%, transparent 80%, #050C1A 100%)',
+            background: 'linear-gradient(to bottom, rgba(5,12,26,0.6) 0%, transparent 25%, transparent 75%, #050C1A 100%)',
           }}
         />
       </div>
 
       {/* ── Watermark — names positioned in the right half ── */}
-      <div className="absolute top-0 right-0 z-[1] overflow-hidden pointer-events-none select-none" style={{ width: '60%', height: '100%' }}>
-        <div className="absolute top-20 right-0 lg:top-16 text-right pr-2 lg:pr-6 watermark">
+      <div className="absolute top-0 right-0 z-[1] w-full sm:w-[60%] h-full overflow-hidden pointer-events-none select-none">
+        <div className="absolute top-16 right-0 sm:top-20 lg:top-16 text-right pr-4 sm:pr-6 watermark">
           <span
             className="block font-black uppercase leading-[0.9] tracking-[-0.04em]"
             style={{
-              fontSize: 'clamp(5rem, 12vw, 11rem)',
-              color: 'rgba(255, 255, 255, 0.07)',
+              fontSize: 'clamp(3.5rem, 11vw, 11rem)',
+              color: 'rgba(255, 255, 255, 0.05)',
             }}
           >
             SOUVIK
@@ -70,8 +77,8 @@ export default function Hero() {
           <span
             className="block font-black uppercase leading-[0.9] tracking-[-0.02em]"
             style={{
-              fontSize: 'clamp(3rem, 7vw, 6.5rem)',
-              color: 'rgba(255, 255, 255, 0.05)',
+              fontSize: 'clamp(2.2rem, 6.5vw, 6.5rem)',
+              color: 'rgba(255, 255, 255, 0.04)',
             }}
           >
             BISOI
@@ -79,36 +86,35 @@ export default function Hero() {
         </div>
       </div>
 
-
       {/* ── Content ── */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-10 pt-28 pb-10 lg:pt-28 lg:pb-12 min-h-screen flex flex-col justify-center">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-10 pt-24 sm:pt-28 pb-12 min-h-screen flex flex-col justify-center">
         <div className="max-w-xl lg:max-w-[45%]">
-          {/* Availability badge — Poppins 600 */}
+          {/* Availability badge */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
             custom={0}
-            className="mb-6"
+            className="mb-5 sm:mb-6"
           >
-            <span className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm">
-              <span className="relative flex h-2.5 w-2.5">
+            <span className="inline-flex items-center gap-2 sm:gap-2.5 bg-white/5 border border-white/10 rounded-full px-3.5 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-semibold text-white backdrop-blur-sm">
+              <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
                 <span className="pulse-dot absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500" />
+                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-orange-500" />
               </span>
               Available for New Projects
             </span>
           </motion.div>
 
-          {/* Headline — Poppins 800, normal (not italic), ~50px */}
+          {/* Headline */}
           <motion.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
             custom={1}
-            className="uppercase mb-6"
+            className="uppercase mb-5 sm:mb-6"
             style={{
-              fontSize: 'clamp(2.2rem, 3.8vw, 3.2rem)',
+              fontSize: 'clamp(1.85rem, 5.5vw, 3.2rem)',
               lineHeight: 1.1,
               letterSpacing: '-0.01em',
               fontWeight: 800,
@@ -123,13 +129,13 @@ export default function Hero() {
             <span className="block headline-dark">EXPERIENCES.</span>
           </motion.h1>
 
-          {/* Supporting paragraph — Poppins 400, ~17px */}
+          {/* Supporting paragraph */}
           <motion.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
             custom={2}
-            className="text-white/50 text-sm lg:text-base leading-relaxed mb-7 max-w-[400px] font-normal"
+            className="text-white/50 text-xs sm:text-sm lg:text-base leading-relaxed mb-6 sm:mb-7 max-w-[400px] font-normal"
           >
             I transform raw footage into cinematic stories that captivate
             audiences, grow brands, and leave a lasting impression — frame by
@@ -142,17 +148,17 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             custom={3}
-            className="flex flex-wrap gap-4 mb-10"
+            className="flex flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10"
           >
             {/* View Projects */}
             <motion.a
               href="#projects"
               whileHover={{ y: -2, boxShadow: '0 8px 30px rgba(5,12,26,0.5)' }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2.5 bg-navy-900 text-white font-semibold text-[14px] leading-[23px] px-6 py-3 rounded-full border border-white/10 transition-colors duration-300 hover:bg-navy-800"
+              className="inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-navy-900 text-white font-semibold text-xs sm:text-[14px] sm:leading-[23px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/10 transition-colors duration-300 hover:bg-navy-800"
             >
               View Projects
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/10">
+              <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/10">
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
                 </svg>
@@ -164,7 +170,7 @@ export default function Hero() {
               href="#contact"
               whileHover={{ y: -2, backgroundColor: 'rgba(255,255,255,0.05)' }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 text-white font-semibold text-[14px] leading-[23px] px-6 py-3 rounded-full border border-white/20 bg-transparent transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 text-white font-semibold text-xs sm:text-[14px] sm:leading-[23px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 bg-transparent transition-colors duration-300"
             >
               Contact Me
             </motion.a>
@@ -175,19 +181,19 @@ export default function Hero() {
             variants={statsFade}
             initial="hidden"
             animate="visible"
-            className="inline-flex bg-navy-950/50 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden"
+            className="flex w-full sm:w-auto sm:inline-flex bg-navy-950/60 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden"
           >
             {stats.map((stat, idx) => (
               <div
                 key={stat.label}
-                className={`flex flex-col px-4 lg:px-6 py-3.5 ${
+                className={`flex-1 sm:flex-initial flex flex-col items-center sm:items-start px-2 sm:px-5 lg:px-6 py-3 sm:py-3.5 ${
                   idx < stats.length - 1 ? 'border-r border-white/10' : ''
                 }`}
               >
-                <span className="text-[22px] lg:text-[26px] leading-[41px] font-extrabold text-white mb-1">
+                <span className="text-base sm:text-[22px] lg:text-[26px] sm:leading-[41px] font-extrabold text-white mb-0.5 sm:mb-1">
                   {stat.value}
                 </span>
-                <span className="text-[10px] lg:text-xs font-semibold text-white/40 tracking-[0.15em] uppercase whitespace-pre-line leading-tight">
+                <span className="text-[8px] sm:text-[10px] lg:text-xs font-semibold text-white/40 tracking-wider sm:tracking-[0.15em] uppercase whitespace-pre-line leading-tight text-center sm:text-left">
                   {stat.label}
                 </span>
               </div>
