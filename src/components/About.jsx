@@ -10,17 +10,16 @@ gsap.registerPlugin(ScrollTrigger)
 export default function About() {
   const sectionRef = useRef(null)
   const watermarkRef = useRef(null)
-  const photoCardRef = useRef(null)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
 
     const ctx = gsap.context(() => {
-      // Slower ghost watermark parallax
+      // Slower ghost watermark parallax drift
       if (watermarkRef.current) {
         gsap.to(watermarkRef.current, {
-          yPercent: 18,
+          yPercent: 12,
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -30,66 +29,33 @@ export default function About() {
           },
         })
       }
-
-      // Portrait photo scrubbed vertical parallax
-      if (photoCardRef.current && window.innerWidth >= 768) {
-        gsap.fromTo(
-          photoCardRef.current,
-          { y: 30 },
-          {
-            y: -30,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.2,
-            },
-          }
-        )
-      }
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
-  // Line mask variants for heading
-  const lineVariant = {
-    hidden: { y: '105%', opacity: 0 },
-    visible: (custom = 0) => ({
-      y: '0%',
-      opacity: 1,
-      transition: {
-        duration: MOTION_CONFIG.duration.heroHeadline,
-        ease: MOTION_CONFIG.ease.framerCinematic,
-        delay: 0.2 + custom * 0.14,
-      },
-    }),
-  }
-
-  // Paragraph fade-up variants
-  const paragraphFade = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (custom = 0) => ({
+  // Animation variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i = 0) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: MOTION_CONFIG.duration.sectionReveal,
+        delay: 0.1 + i * 0.12,
+        duration: 0.75,
         ease: MOTION_CONFIG.ease.framerCinematic,
-        delay: 0.45 + custom * 0.15,
       },
     }),
   }
 
-  // Photo bottom-to-top clip reveal
   const photoReveal = {
-    hidden: { clipPath: 'inset(100% 0% 0% 0% round 28px)', opacity: 0, scale: 1.05 },
+    hidden: { opacity: 0, scale: 0.96, y: 25 },
     visible: {
-      clipPath: 'inset(0% 0% 0% 0% round 28px)',
       opacity: 1,
       scale: 1,
+      y: 0,
       transition: {
-        duration: 1.1,
+        duration: 0.85,
         ease: MOTION_CONFIG.ease.framerCinematic,
         delay: 0.15,
       },
@@ -115,17 +81,16 @@ export default function About() {
       <div className="relative z-10 max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
 
-          {/* ── Left column: Portrait card with Clip Reveal & Scrub Parallax ── */}
-          <div
-            ref={photoCardRef}
-            className="lg:col-span-5 flex justify-center lg:justify-start will-change-transform"
+          {/* ── Left column: Portrait card ── */}
+          <motion.div
+            variants={photoReveal}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="lg:col-span-5 flex justify-center lg:justify-start"
           >
-            <motion.div
-              variants={photoReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.25 }}
-              className="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-[450px] rounded-[28px] overflow-hidden"
+            <div
+              className="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-[450px] rounded-[28px] overflow-hidden shadow-2xl"
               style={{
                 boxShadow:
                   '0 0 50px 10px rgba(59, 130, 246, 0.15), 0 0 100px 25px rgba(59, 130, 246, 0.06)',
@@ -136,8 +101,8 @@ export default function About() {
                 alt="Souvik Bisoi — Video Editor & Motion Designer"
                 className="w-full h-auto object-cover rounded-[28px] hover:scale-[1.02] transition-transform duration-500"
               />
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
           {/* ── Right column: Outlined Watermark + Headline + Copy ── */}
           <div className="lg:col-span-7 relative flex flex-col justify-center">
@@ -145,7 +110,7 @@ export default function About() {
             {/* ── Outlined Watermark "ABOUT ME" with GSAP parallax drift ── */}
             <div
               ref={watermarkRef}
-              className="absolute -top-14 sm:-top-16 lg:-top-20 left-0 right-0 pointer-events-none select-none overflow-hidden z-0 will-change-transform"
+              className="absolute -top-12 sm:-top-16 lg:-top-20 left-0 right-0 pointer-events-none select-none overflow-hidden z-0 will-change-transform"
             >
               <span
                 className="block font-[900] uppercase tracking-[-0.03em] leading-none whitespace-nowrap"
@@ -160,8 +125,13 @@ export default function About() {
               </span>
             </div>
 
-            {/* ── Masked Headline ── */}
-            <h2
+            {/* ── Main Headline ── */}
+            <motion.h2
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              custom={0}
               className="relative z-10 font-[900] uppercase tracking-tight mb-6 sm:mb-8"
               style={{
                 fontFamily: "'Poppins', sans-serif",
@@ -169,39 +139,19 @@ export default function About() {
                 lineHeight: '1.1',
               }}
             >
-              <div className="overflow-hidden py-0.5">
-                <motion.span
-                  variants={lineVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
-                  custom={0}
-                  className="block text-white"
-                >
-                  CRAFTING STORIES
-                </motion.span>
-              </div>
-              <div className="overflow-hidden py-0.5">
-                <motion.span
-                  variants={lineVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
-                  custom={1}
-                  className="block text-[#3B82F6] drop-shadow-[0_0_20px_rgba(59,130,246,0.35)]"
-                >
-                  FRAME BY FRAME
-                </motion.span>
-              </div>
-            </h2>
+              <span className="block text-white">CRAFTING STORIES</span>
+              <span className="block text-[#3B82F6] drop-shadow-[0_0_20px_rgba(59,130,246,0.35)]">
+                FRAME BY FRAME
+              </span>
+            </motion.h2>
 
             {/* ── Bio Paragraph with Highlighted Keywords & Soft Glow ── */}
             <motion.p
-              variants={paragraphFade}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              custom={0}
+              viewport={{ once: true, amount: 0.1 }}
+              custom={1}
               className="relative z-10 text-white/70 text-sm sm:text-[15px] lg:text-[16px] leading-[1.75] mb-5 font-normal max-w-xl"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
@@ -213,7 +163,7 @@ export default function About() {
                   textShadow: ['0 0 0px #3B82F6', '0 0 16px rgba(59,130,246,0.8)', '0 0 6px rgba(59,130,246,0.4)'],
                 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.4, delay: 0.8 }}
+                transition={{ duration: 1.4, delay: 0.6 }}
                 className="text-[#3B82F6] font-semibold"
               >
                 4 years
@@ -226,7 +176,7 @@ export default function About() {
                   textShadow: ['0 0 0px #3B82F6', '0 0 16px rgba(59,130,246,0.8)', '0 0 6px rgba(59,130,246,0.4)'],
                 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.4, delay: 0.95 }}
+                transition={{ duration: 1.4, delay: 0.75 }}
                 className="text-[#3B82F6] font-semibold"
               >
                 agencies
@@ -236,11 +186,11 @@ export default function About() {
 
             {/* ── Philosophy Paragraph ── */}
             <motion.p
-              variants={paragraphFade}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              custom={1}
+              viewport={{ once: true, amount: 0.1 }}
+              custom={2}
               className="relative z-10 text-white/70 text-sm sm:text-[15px] lg:text-[16px] leading-[1.75] font-normal max-w-xl"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
