@@ -109,9 +109,6 @@ export default function ServicesOffer() {
       id="services"
       className="relative w-full bg-navy-950 py-24 lg:py-32 overflow-hidden"
     >
-      {/* Background light streak texture matching site theme */}
-      <div className="light-streaks opacity-30 pointer-events-none" />
-
       {/* Decorative ambient background glows */}
       <div className="absolute top-1/3 -left-40 w-96 h-96 rounded-full bg-accent/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-10 -right-40 w-96 h-96 rounded-full bg-accent/10 blur-[120px] pointer-events-none" />

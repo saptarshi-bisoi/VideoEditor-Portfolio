@@ -277,8 +277,6 @@ export default function Services() {
       id="services"
       className="relative w-full overflow-hidden bg-navy-950 py-24 lg:py-32 border-t border-white/5"
     >
-      {/* Background light streak overlay matching index.css */}
-      <div className="light-streaks opacity-40 pointer-events-none" />
 
       {/* ── "SERVICES" Watermark background text ── */}
       <div className="absolute top-10 left-0 right-0 z-0 pointer-events-none select-none overflow-hidden">
