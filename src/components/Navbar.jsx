@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { MOTION_CONFIG } from '../config/motion'
 
 const navLinks = [
   { label: 'About', href: '#about', id: 'about' },
@@ -12,9 +13,13 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
+      // Background blur/opacity shift after 40px
+      setScrolled(window.scrollY > 40)
+
       const sectionIds = ['about', 'projects', 'services', 'reviews', 'contact']
       const scrollPosition = window.scrollY + 250 // threshold for navbar height
 
@@ -39,9 +44,22 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-navy-950/80 backdrop-blur-xl border-b border-white/5">
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: MOTION_CONFIG.duration.sectionReveal,
+        ease: MOTION_CONFIG.ease.framerCinematic,
+        delay: 0.2,
+      }}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${
+        scrolled
+          ? 'bg-navy-950/92 backdrop-blur-2xl border-white/10 shadow-xl'
+          : 'bg-navy-950/70 backdrop-blur-md border-white/5'
+      }`}
+    >
       {/* Decorative ribbon in top-left corner */}
-      <div className="absolute top-0 left-0 w-8 h-8 overflow-hidden">
+      <div className="absolute top-0 left-0 w-8 h-8 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-12 h-12 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-accent/80" />
       </div>
 
@@ -114,12 +132,15 @@ export default function Navbar() {
 
         {/* Far right: Hire Me button + mobile menu toggle */}
         <div className="flex items-center gap-3">
-          <a
+          <motion.a
             href="#contact"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: MOTION_CONFIG.duration.microFast, ease: 'easeOut' }}
             className="hidden sm:inline-flex items-center px-6 py-2 bg-cream text-navy-950 font-bold text-xs rounded-full hover:bg-white hover:shadow-lg hover:shadow-cream/20 transition-all duration-300"
           >
             Hire Me
-          </a>
+          </motion.a>
 
           {/* Mobile hamburger */}
           <button
@@ -190,6 +211,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   )
 }
