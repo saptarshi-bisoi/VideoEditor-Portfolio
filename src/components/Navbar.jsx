@@ -78,25 +78,21 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Phone pill */}
+          {/* Phone / WhatsApp pill */}
           <a
-            href="tel:+91XXXXXXXXXX"
-            className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-sm text-white/80 hover:bg-white/10 transition-colors duration-300"
+            href="https://wa.me/918159042006?text=Hello%20Souvik%21%20%F0%9F%91%8B%20I%20came%20across%20your%20website%20and%20I%27m%20interested%20in%20your%20video%20editing%20services.%20I%27d%20like%20to%20discuss%20a%20project%20with%20you."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-sm text-white/80 hover:bg-white/10 hover:border-[#25D366]/40 hover:text-[#25D366] transition-colors duration-300"
           >
             <svg
-              className="w-3.5 h-3.5 text-accent"
-              fill="none"
+              className="w-3.5 h-3.5 text-[#25D366]"
+              fill="currentColor"
               viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-              />
+              <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.275-.101-.475-.15-.675.15-.2.301-.776.98-.952 1.18-.175.201-.35.226-.651.076-.301-.15-1.27-.468-2.42-1.493-.895-.798-1.5-1.784-1.676-2.085-.175-.301-.019-.464.132-.614.136-.135.301-.35.452-.526.15-.175.2-.301.3-.501.1-.2.05-.376-.025-.526-.075-.15-.676-1.63-.926-2.233-.244-.588-.493-.508-.676-.517l-.576-.01c-.2 0-.526.075-.802.376-.276.301-1.052 1.028-1.052 2.508 0 1.48 1.077 2.909 1.228 3.11.15.2 2.12 3.238 5.136 4.541.717.31 1.277.495 1.713.633.72.228 1.376.196 1.894.118.578-.087 1.78-.727 2.03-1.43.25-.702.25-1.303.175-1.43-.075-.126-.275-.201-.576-.351zM12.012 2.002C6.49 2.002 2.01 6.48 2.01 12.003c0 1.996.586 3.864 1.602 5.438L2.001 22l4.708-1.545a9.96 9.96 0 005.303 1.548c5.522 0 10.002-4.478 10.002-10c0-5.523-4.48-10.001-10.002-10.001zm0 18.238c-1.64 0-3.176-.49-4.469-1.332l-.32-.209-2.791.916.936-2.721-.229-.338a8.214 8.214 0 01-1.358-4.551c0-4.55 3.702-8.252 8.231-8.252 4.53 0 8.232 3.702 8.232 8.252 0 4.55-3.702 8.245-8.231 8.245z"/>
             </svg>
-            <span className="font-normal text-xs">+91 XXXXX XXXXX</span>
+            <span className="font-normal text-xs">+91 81590 42006</span>
           </a>
         </div>
 
@@ -192,13 +188,15 @@ export default function Navbar() {
                 )
               })}
               <a
-                href="tel:+91XXXXXXXXXX"
-                className="flex items-center gap-2 px-4 py-3 text-sm text-white/80"
+                href="https://wa.me/918159042006?text=Hello%20Souvik%21%20%F0%9F%91%8B%20I%20came%20across%20your%20website%20and%20I%27m%20interested%20in%20your%20video%20editing%20services.%20I%27d%20like%20to%20discuss%20a%20project%20with%20you."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-3 text-sm text-white/80 hover:text-[#25D366] transition-colors"
               >
-                <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                <svg className="w-4 h-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.275-.101-.475-.15-.675.15-.2.301-.776.98-.952 1.18-.175.201-.35.226-.651.076-.301-.15-1.27-.468-2.42-1.493-.895-.798-1.5-1.784-1.676-2.085-.175-.301-.019-.464.132-.614.136-.135.301-.35.452-.526.15-.175.2-.301.3-.501.1-.2.05-.376-.025-.526-.075-.15-.676-1.63-.926-2.233-.244-.588-.493-.508-.676-.517l-.576-.01c-.2 0-.526.075-.802.376-.276.301-1.052 1.028-1.052 2.508 0 1.48 1.077 2.909 1.228 3.11.15.2 2.12 3.238 5.136 4.541.717.31 1.277.495 1.713.633.72.228 1.376.196 1.894.118.578-.087 1.78-.727 2.03-1.43.25-.702.25-1.303.175-1.43-.075-.126-.275-.201-.576-.351zM12.012 2.002C6.49 2.002 2.01 6.48 2.01 12.003c0 1.996.586 3.864 1.602 5.438L2.001 22l4.708-1.545a9.96 9.96 0 005.303 1.548c5.522 0 10.002-4.478 10.002-10c0-5.523-4.48-10.001-10.002-10.001zm0 18.238c-1.64 0-3.176-.49-4.469-1.332l-.32-.209-2.791.916.936-2.721-.229-.338a8.214 8.214 0 01-1.358-4.551c0-4.55 3.702-8.252 8.231-8.252 4.53 0 8.232 3.702 8.232 8.252 0 4.55-3.702 8.245-8.231 8.245z"/>
                 </svg>
-                +91 XXXXX XXXXX
+                +91 81590 42006
               </a>
               <a
                 href="#contact"

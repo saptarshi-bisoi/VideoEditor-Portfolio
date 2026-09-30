@@ -12,6 +12,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   // GSAP ScrollTrigger Watermark Parallax Drift
   useEffect(() => {
@@ -38,17 +39,47 @@ export default function Contact() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+    if (errorMessage) setErrorMessage('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => {
+    setErrorMessage('')
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '9da0fe2a-f585-4218-8bf3-45cc3c756993'
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || `New inquiry from ${formData.name}`,
+          message: formData.message,
+          from_name: `${formData.name} (via Portfolio)`,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSubmitted(true)
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        setTimeout(() => setSubmitted(false), 6000)
+      } else {
+        setErrorMessage(data.message || 'Something went wrong. Please reach out directly via Email or WhatsApp.')
+      }
+    } catch (err) {
+      setErrorMessage('Network error. Please check your internet connection or email directly.')
+    } finally {
       setLoading(false)
-      setSubmitted(true)
-      setFormData({ name: '', email: '', subject: '', message: '' })
-      setTimeout(() => setSubmitted(false), 5000)
-    }, 800)
+    }
   }
 
   // Animation variants
@@ -197,7 +228,7 @@ export default function Contact() {
               Feel free to reach out through the contact form or directly via email or social channels.
             </motion.p>
 
-            {/* ── 3 Individual Contact Method Cards (Slide in from Left + Hover Arrow Rotate) ── */}
+            {/* ── Contact Method Cards (Slide in from Left + Hover Arrow Rotate) ── */}
             <div className="flex flex-col gap-3.5 sm:gap-4 w-full mb-8">
               {/* 1. Email */}
               <motion.a
@@ -206,7 +237,7 @@ export default function Contact() {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
                 custom={0}
-                href="mailto:overlordyt621@gmail.com"
+                href="mailto:souvikbisoi2021@gmail.com"
                 className="group flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-accent/40 rounded-2xl p-4 sm:p-5 transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
@@ -218,7 +249,7 @@ export default function Contact() {
                   <div>
                     <span className="block text-[10px] text-white/50 font-medium uppercase tracking-wider mb-0.5">Email</span>
                     <span className="block text-xs sm:text-sm font-semibold text-white group-hover:text-accent transition-colors break-all">
-                      overlordyt621@gmail.com
+                      souvikbisoi2021@gmail.com
                     </span>
                   </div>
                 </div>
@@ -235,13 +266,51 @@ export default function Contact() {
                 </div>
               </motion.a>
 
-              {/* 2. Location */}
-              <motion.div
+              {/* 2. WhatsApp */}
+              <motion.a
                 variants={slideInLeft}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
                 custom={1}
+                href="https://wa.me/918159042006?text=Hello%20Souvik%21%20%F0%9F%91%8B%20I%20came%20across%20your%20website%20and%20I%27m%20interested%20in%20your%20video%20editing%20services.%20I%27d%20like%20to%20discuss%20a%20project%20with%20you."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 hover:border-[#25D366]/40 rounded-2xl p-4 sm:p-5 transition-all duration-300"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/80 group-hover:text-[#25D366] group-hover:border-[#25D366]/30 transition-colors flex-shrink-0">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.275-.101-.475-.15-.675.15-.2.301-.776.98-.952 1.18-.175.201-.35.226-.651.076-.301-.15-1.27-.468-2.42-1.493-.895-.798-1.5-1.784-1.676-2.085-.175-.301-.019-.464.132-.614.136-.135.301-.35.452-.526.15-.175.2-.301.3-.501.1-.2.05-.376-.025-.526-.075-.15-.676-1.63-.926-2.233-.244-.588-.493-.508-.676-.517l-.576-.01c-.2 0-.526.075-.802.376-.276.301-1.052 1.028-1.052 2.508 0 1.48 1.077 2.909 1.228 3.11.15.2 2.12 3.238 5.136 4.541.717.31 1.277.495 1.713.633.72.228 1.376.196 1.894.118.578-.087 1.78-.727 2.03-1.43.25-.702.25-1.303.175-1.43-.075-.126-.275-.201-.576-.351zM12.012 2.002C6.49 2.002 2.01 6.48 2.01 12.003c0 1.996.586 3.864 1.602 5.438L2.001 22l4.708-1.545a9.96 9.96 0 005.303 1.548c5.522 0 10.002-4.478 10.002-10c0-5.523-4.48-10.001-10.002-10.001zm0 18.238c-1.64 0-3.176-.49-4.469-1.332l-.32-.209-2.791.916.936-2.721-.229-.338a8.214 8.214 0 01-1.358-4.551c0-4.55 3.702-8.252 8.231-8.252 4.53 0 8.232 3.702 8.232 8.252 0 4.55-3.702 8.245-8.231 8.245z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="block text-[10px] text-white/50 font-medium uppercase tracking-wider mb-0.5">WhatsApp</span>
+                    <span className="block text-xs sm:text-sm font-semibold text-white group-hover:text-[#25D366] transition-colors">
+                      +91 81590 42006
+                    </span>
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 group-hover:bg-[#25D366] group-hover:border-[#25D366] group-hover:text-white transition-all duration-300 flex-shrink-0">
+                  <svg
+                    className="w-4 h-4 transform group-hover:rotate-45 transition-transform duration-300 ease-out"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+                </div>
+              </motion.a>
+
+              {/* 3. Location */}
+              <motion.div
+                variants={slideInLeft}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                custom={2}
                 className="group flex items-center justify-between bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-5 transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
@@ -265,13 +334,13 @@ export default function Contact() {
                 </div>
               </motion.div>
 
-              {/* 3. Availability */}
+              {/* 4. Availability */}
               <motion.div
                 variants={slideInLeft}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-                custom={2}
+                custom={3}
                 className="group flex items-center justify-between bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-5 transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
@@ -298,11 +367,22 @@ export default function Contact() {
             {/* ── Social Icon Buttons Row (Stagger pop-in) ── */}
             <div className="flex items-center gap-3 pt-2">
               {[
-                { label: 'LinkedIn', href: 'https://linkedin.com', icon: <span className="text-xs font-bold font-serif">in</span> },
-                { label: 'X (Twitter)', href: 'https://x.com', icon: <span className="text-xs font-extrabold">X</span> },
+                {
+                  label: 'WhatsApp',
+                  href: 'https://wa.me/918159042006?text=Hello%20Souvik%21%20%F0%9F%91%8B%20I%20came%20across%20your%20website%20and%20I%27m%20interested%20in%20your%20video%20editing%20services.%20I%27d%20like%20to%20discuss%20a%20project%20with%20you.',
+                  hoverBg: '#25D366',
+                  icon: (
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.98-.275-.101-.475-.15-.675.15-.2.301-.776.98-.952 1.18-.175.201-.35.226-.651.076-.301-.15-1.27-.468-2.42-1.493-.895-.798-1.5-1.784-1.676-2.085-.175-.301-.019-.464.132-.614.136-.135.301-.35.452-.526.15-.175.2-.301.3-.501.1-.2.05-.376-.025-.526-.075-.15-.676-1.63-.926-2.233-.244-.588-.493-.508-.676-.517l-.576-.01c-.2 0-.526.075-.802.376-.276.301-1.052 1.028-1.052 2.508 0 1.48 1.077 2.909 1.228 3.11.15.2 2.12 3.238 5.136 4.541.717.31 1.277.495 1.713.633.72.228 1.376.196 1.894.118.578-.087 1.78-.727 2.03-1.43.25-.702.25-1.303.175-1.43-.075-.126-.275-.201-.576-.351zM12.012 2.002C6.49 2.002 2.01 6.48 2.01 12.003c0 1.996.586 3.864 1.602 5.438L2.001 22l4.708-1.545a9.96 9.96 0 005.303 1.548c5.522 0 10.002-4.478 10.002-10c0-5.523-4.48-10.001-10.002-10.001zm0 18.238c-1.64 0-3.176-.49-4.469-1.332l-.32-.209-2.791.916.936-2.721-.229-.338a8.214 8.214 0 01-1.358-4.551c0-4.55 3.702-8.252 8.231-8.252 4.53 0 8.232 3.702 8.232 8.252 0 4.55-3.702 8.245-8.231 8.245z"/>
+                    </svg>
+                  ),
+                },
+                { label: 'LinkedIn', href: 'https://linkedin.com', hoverBg: '#3B82F6', icon: <span className="text-xs font-bold font-serif">in</span> },
+                { label: 'X (Twitter)', href: 'https://x.com', hoverBg: '#3B82F6', icon: <span className="text-xs font-extrabold">X</span> },
                 {
                   label: 'Instagram',
                   href: 'https://instagram.com',
+                  hoverBg: '#E1306C',
                   icon: (
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -319,7 +399,7 @@ export default function Contact() {
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.6 + i * 0.08, duration: 0.4, ease: 'backOut' }}
-                  whileHover={{ scale: 1.1, backgroundColor: '#3B82F6', borderColor: '#3B82F6' }}
+                  whileHover={{ scale: 1.1, backgroundColor: social.hoverBg || '#3B82F6', borderColor: social.hoverBg || '#3B82F6' }}
                   whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white transition-colors duration-200"
                   aria-label={social.label}
@@ -493,6 +573,23 @@ export default function Contact() {
                     )}
                   </AnimatePresence>
                 </motion.button>
+
+                {/* Error Banner */}
+                <AnimatePresence>
+                  {errorMessage && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-start gap-2.5"
+                    >
+                      <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <span>{errorMessage}</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </form>
             </div>
           </motion.div>
